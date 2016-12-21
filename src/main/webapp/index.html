@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<link href='css/main.css' media='screen' rel='stylesheet' type='text/css'/>
+
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript"> 
+     var xmlhttp;
+     function init() {
+        // put more code here in case you are concerned about browsers that do not provide XMLHttpRequest object directly
+        xmlhttp = new XMLHttpRequest();          
+     }
+     </script> 
+<script type="text/javascript">
+	var languaje='english';
+
+	function setLanguage(lang) {
+		languaje = lang		
+    }
+    
+    function getTranslation() { 
+    	document.getElementById("darkLayer").style.display = "";
+        //invoca al servicio en el origen http://icotraductor.mybluemix.net/rest/
+		var encodedPhrase = btoa(phrase.value);
+        var url = "traductor/text?phrase=" + encodedPhrase + "&language=" + languaje ;
+        var res = getResponse(url, 'POST');
+         document.getElementById("darkLayer").style.display = "none";
+        //var resDecoded = atob(res);
+        //var det = eval( "(" +  xmlhttp.responseText + ")");  si devuelvo json
+        //result.value = resDecoded;
+        result.value = res;
+    }
+ 
+    	function getSyntetyse() {
+    	 document.getElementById("darkLayer").style.display = "";
+    	 var encodedPhrase = btoa(document.getElementById("result").value);
+         var url = "traductor/voice/" + encodedPhrase;
+         //alert(document.getElementById("result").value);
+         var res = getResponse(url, 'GET');
+         document.getElementById("darkLayer").style.display = "none";
+         var fileString = "data:audio/wav;base64," + res; 
+         var audio = new Audio(fileString); 
+		 audio.play();      
+    }
+    
+       function getResponse(url, method) {
+                xmlhttp.open(method,url,false);
+        		var res;
+         		xmlhttp.onreadystatechange = function() {
+         		//var result =  document.getElementById("result");
+                if (xmlhttp.readyState == 4) {
+                   if ( xmlhttp.status == 200) {
+                   		//alert(xmlhttp.responseText);
+						res = xmlhttp.responseText;                  		
+                  	}else{
+                    	alert('error receiving data');
+                   		 res = 'error receiving data';
+               		}
+               	}
+              };
+              xmlhttp.send(null);
+              return res;
+        }       
+  </script>
+
+</head>
+<body onload="init()">
+
+<div style="background-color:#131F2D; height:15%;">
+<div id="darkLayer" class="darkClass" style="display:none"></div>
+	<div style="margin:0 auto;">
+		<table align="center">
+			<tr>
+				<td>
+					<img src="images/bluemix.png"  height=90 width="230" style="margin-top:1px; border: 5px solid #bbb;border-radius: 100px;"/>
+				</td>
+				<td nowrap="nowrap">
+					<span style="margin-left: 30px; margin-right: 80px; font-size:24pt; padding:0 8px; color:#E2C9C9; font-family: arial;">Translation service</span>
+				</td>
+
+				<td>
+					<img src="images/watson.png"  height=90 width="230" style="margin-top:3px; border: 5px solid #bbb;border-radius: 100px;"/>
+				</td>				
+			</tr>
+		</table>
+	</div>
+</div>
+<div style="background-color:#263F5D; height:85%;">
+	<form  id="form1">
+		<table  align="center">
+			<tr>
+				<td><span style="font-size:18pt; padding:0 8px; font-family: arial; color:#FFFFFF;">Enter you text :</span></td>				
+				<td><textarea rows="10" cols="100" id="phrase" style="font-size:12pt; font-family: arial; margin: 10px;     box-sizing: border-box; border: 4px solid #ccc; border-radius: 4px;"></textarea></td>
+				<td align="center"><input type="button" class="button" value="Translate the text" onclick="getTranslation()" /> 
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="target_languaje"><span style="font-size:18pt; padding:0 8px; font-family: arial; color:#FFFFFF;">Translate to :</label>
+				</td>
+				<td>
+					<select id="target_languaje" name="target" style="width:200px; height:40px; margin:10px; background-color:#B7D2DD; font-size:14pt; font-weight:bold;" onchange="setLanguage(this.options[this.selectedIndex].value)">
+						<option selected disabled>Choose here</option>
+						<option value="english">English</option> 
+						<option value="spanish">Spanish</option>
+						<option value="french">French</option>
+						<option value="italian">Italian</option>
+						<option value="portuguese">Portuguese</option>
+					</select>
+				</td>
+			</tr>		
+			<tr>
+				<td><span style="font-size:18pt; padding:0 8px; font-family: arial; color:#FFFFFF;">Translation result :</span></td> 
+				<td><textarea rows="10" cols="100" id="result" readonly="true" style="font-size:12pt; font-family: arial; margin: 10px;    box-sizing: border-box; border: 4px solid #ccc; border-radius: 4px;"> </textarea></td>
+				<td align="center"><input type="button" class="button" value="Listen the result" onclick="getSyntetyse()" /></td>  
+				<!-- td align="center"><input type="image" src="images/sound.png"  onclick="getSyntetyse()" /></td>-->
+			</tr>
+		</table>
+	</form>
+	</div>
+
+</body>
+<script type="text/javascript">
+ 	 var select = document.getElementById("target_languaje").selectedIndex = 0;
+</script>
+</html>

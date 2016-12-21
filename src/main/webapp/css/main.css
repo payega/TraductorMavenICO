@@ -1,0 +1,40 @@
+/* 
+*  Copyright IBM Corp. 2015  All Rights Reserved.
+*  Weather Company Data for IBM Bluemix Demo App
+*/
+
+.darkClass
+{
+    background-color: white;
+    filter:alpha(opacity=50); /* IE */
+    opacity: 0.5; /* Safari, Opera */
+    -moz-opacity:0.50; /* FireFox */
+    z-index: 20;
+    height: 100%;
+    width: 100%;
+    background-repeat:no-repeat;
+    background-position:center;
+    position:absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.darkClass img {
+    width: 100%;
+    height: auto;
+}
+
+input.button{
+     white-space: normal;
+     width: 110px;
+    }
+
+    select#target_languaje {
+   color: #fff;
+   background-image: url(images/15xvbd5.png), -webkit-linear-gradient(#779126, #779126 40%, #779126);
+   background-color: #779126;
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+   padding-left: 15px;
+}
